@@ -1,7 +1,7 @@
 import mysql.connector
 
-def search_book():
-    dataBase = mysql.connector.connect(
+def view_users():
+    dataBase=mysql.connector.connect(
         host="localhost",
         user="root",
         password="root",
@@ -10,19 +10,20 @@ def search_book():
     
     cursorObject = dataBase.cursor()
     
-    sql = "SELECT * FROM book"
+    sql = "SELECT * FROM user"
+    
     cursorObject.execute(sql)
     
-    results = cursorObject.fetchall()
+    result = cursorObject.fetchall()
     
-    if results:
-        print("Book Inventory..")
-        for row in results:
+    if result:
+        print("users found..")
+        for row in result:
             print(row)
     else:
         print("No Record found....")
         
     cursorObject.close()
     dataBase.close()
-    
-search_book()
+
+view_users()

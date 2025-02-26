@@ -1,23 +1,32 @@
 import mysql.connector
+from datetime import datetime, timedelta
 
-dataBase = mysql.connector.connect(
-    host = "localhost",
-    user = "root",
-    password = "root",
-    database = "Library_system"
-)
+def book_borrow(user_id, book_id, issue_date):
+    dataBase = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="root",
+        database="Library_system"
+    )
+    
+    cursorObject = dataBase.cursor()
+    return_date = (datetime.strptime(issue_date, "%Y-%m-%d") + timedelta(days=15)).strftime("%Y-%m-%d")
 
-cursorObject = dataBase.cursor()
+    sql = """INSERT INTO transaction(user_id, book_id, issue_date, return_date) 
+             VALUES (%s, %s, %s, %s)"""
+    val = (user_id, book_id, issue_date, return_date)
 
-# Book Borrow by user
+    cursorObject.execute(sql, val)
+    dataBase.commit()
 
-val = [(2,4,'2025-02-15'),
-       (3,1,'2005-05-25'),
-       (5,6,'2024-02-14'),
-       (6,8,'2023-10-31')]
+    print("Book issued to user....")
 
-cursorObject.executemany("INSERT INTO transaction (user_id, book_id, issue_date) VALUES (%s, %s, %s)",val)
-dataBase.commit()
+    cursorObject.close()
+    dataBase.close()
 
-print("Book assigned to user....")
-dataBase.close()
+
+user_id = int(input("Enter user ID: "))
+book_id = int(input("Enter book ID: "))
+issue_date = input("Enter issue date (YYYY-MM-DD): ") 
+
+book_borrow(user_id, book_id, issue_date)

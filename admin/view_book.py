@@ -1,6 +1,6 @@
 import mysql.connector
 
-def search_book():
+def view_book():
     dataBase = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -25,4 +25,4 @@ def search_book():
     cursorObject.close()
     dataBase.close()
     
-search_book()
+view_book()

@@ -1,6 +1,6 @@
 import mysql.connector
 
-def search_book():
+def search_book(book_name):
     dataBase = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -10,19 +10,21 @@ def search_book():
     
     cursorObject = dataBase.cursor()
     
-    sql = "SELECT * FROM book"
-    cursorObject.execute(sql)
+    sql = "SELECT * FROM book WHERE book_name LIKE %s"
+    val = (f"%{book_name}%",)
+    cursorObject.execute(sql, val)
     
     results = cursorObject.fetchall()
     
     if results:
-        print("Book Inventory..")
+        print("Search results.....")
         for row in results:
             print(row)
     else:
-        print("No Record found....")
+        print("Book is not found....")
         
     cursorObject.close()
     dataBase.close()
     
-search_book()
+book_name = input("Enter book name: ")
+search_book(book_name)
