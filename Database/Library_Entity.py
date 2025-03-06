@@ -51,5 +51,12 @@ admin_password VARCHAR(40))"""
 
 cursorObject.execute(adminTable)
 
+
+book_borrow_request = """create table book_borrow_request(req_id INT NOT NULL AUTO_INCREMENT,user_id INT NOT NULL,book_id INT NOT NULL,req_status BOOLEAN,
+FOREIGN KEY (user_id) REFERENCES user(user_id),
+FOREIGN KEY (book_id) REFERENCES book(book_id)) """
+
+cursorObject.execute(book_borrow_request)
+
 print("Table created successfully")
 dataBase.close()
